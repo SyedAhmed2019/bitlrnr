@@ -1,0 +1,12 @@
+{
+  "pass_percent": 80,
+  "questions": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "prompt": "Which function shows text in Python?",
+      "options": ["show()", "print()", "echo()", "display()"],
+      "answer_index": 1
+    }
+  ]
+}

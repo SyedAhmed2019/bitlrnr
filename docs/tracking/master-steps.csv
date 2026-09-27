@@ -1,0 +1,46 @@
+Step ID,Phase,Step,Substep,Description,Est Min,Deliverable / Verify,Depends On
+P0-S1,0 - Setup,Project foundation,Repo layout,"Create bitlrnr folder structure (portal/, courses/, docs/, docker/)",60,Tree matches PLAN; git init on GitHub SyedAhmed2019/bitlrnr,
+P0-S2,0 - Setup,Project foundation,Next.js scaffold,"npx create-next-app in portal/ (TS, App Router, Tailwind)",90,pnpm/npm run dev shows default page,P0-S1
+P0-S3,0 - Setup,Project foundation,Branding shell,"Home page: BitLrnr name, tagline, links to Courses (placeholder)",60,localhost:3000 looks like a portal home,P0-S2
+P0-S4,0 - Setup,Project foundation,Docker Postgres,"docker-compose.yml with postgres; .env.example",60,docker compose up; DB connects,P0-S2
+P0-S5,0 - Setup,Project foundation,Prisma schema v1,"User, Course, Lesson, Level, Vertical models",90,prisma migrate dev succeeds,P0-S4
+P0-S6,0 - Setup,Project foundation,Progress tracker,"Import docs/tracking CSVs into Google Sheet bitlrnr",30,Sheet has Master + Daily tabs,
+P1-S1,1 - Content,Course system,Folder convention,"courses/programming/python/beginner/lesson-01/",45,README in repo documents layout,P0-S3
+P1-S2,1 - Content,Course system,First lesson MD,"Write lesson-01 README.md + hello.py + quiz.json stub",90,Files exist and readable,P1-S1
+P1-S3,1 - Content,Course system,Lesson loader,"Read markdown from courses/ into lesson page",90,Lesson page renders markdown,P1-S2
+P1-S4,1 - Content,Course system,Course catalog,"/courses lists Python/Go/Java/Rust placeholders",60,Four cards or rows visible,P1-S3
+P1-S5,1 - Content,Course system,Video embed,"YouTube iframe slot in lesson template",45,Embed works with test video ID,P1-S3
+P1-S6,1 - Content,Course system,Download code,"API or static route serves exercise files as zip",60,Click downloads hello.py,P1-S2
+P2-S1,2 - Editor,Code tryout,Monaco component,"Client Monaco editor with Python default",90,Editor shows on lesson page,P1-S3
+P2-S2,2 - Editor,Code tryout,Piston in Docker,"Add piston service to docker-compose",60,Piston API responds locally,P0-S4
+P2-S3,2 - Editor,Code tryout,Run API,"POST /api/run with language + source; timeouts",90,print('hi') returns hi,P2-S1;P2-S2
+P2-S4,2 - Editor,Code tryout,Run UI,"Run / Reset buttons; show stdout stderr",60,User sees output in browser,P2-S3
+P2-S5,2 - Editor,Code tryout,Multi-language,"Go Java Rust hello-world templates",90,Each language runs once,P2-S4
+P2-S6,2 - Editor,Code tryout,Safety limits,"Rate limit + 5s timeout + no network in sandbox",45,Abusive loop killed,P2-S3
+P3-S1,3 - Quiz,Assessment,Quiz schema,"Document quiz.json format (MCQ + code-check)",45,docs/quiz-schema.md,P1-S2
+P3-S2,3 - Quiz,Assessment,Quiz UI,"Render questions; submit answers",90,Score shown after submit,P3-S1
+P3-S3,3 - Quiz,Assessment,Mastery gate,"Block next lesson until quiz pass (configurable %)",60,Fail keeps user on lesson,P3-S2
+P3-S4,3 - Quiz,Assessment,Store attempts,"Save attempts in DB via Prisma",60,Row in quiz_attempts table,P3-S2;P0-S5
+P4-S1,4 - Auth,Users,Auth.js,"Install Auth.js; session on site",90,Login/logout works,P0-S5
+P4-S2,4 - Auth,Users,GitHub OAuth,"GitHub provider; link to SyedAhmed2019",60,Sign in with GitHub works,P4-S1
+P4-S3,4 - Auth,Users,Profile fields,"Age band + goal (elementary/middle/high/pro)",60,Profile saved in DB,P4-S2
+P4-S4,4 - Auth,Users,Content gating,"Beginner free; intermediate/advanced locked",90,Locked shows upgrade CTA,P4-S3;P1-S3
+P5-S1,5 - Payments,Stripe,Test products,"Stripe test: intermediate + advanced SKUs",60,Products in Stripe dashboard,P4-S4
+P5-S2,5 - Payments,Stripe,Checkout,"Checkout session for one course tier",90,Test card completes,P5-S1
+P5-S3,5 - Payments,Stripe,Webhooks,"stripe listen; grant entitlement in DB",90,User unlocks after pay,P5-S2
+P5-S4,5 - Payments,Stripe,Customer portal,"Link to manage subscription",45,Portal opens in test,P5-S3
+P6-S1,6 - Community,Q&A,Comments API,"CRUD comments per lesson; auth required",90,Post comment persists,P4-S2
+P6-S2,6 - Community,Q&A,Comments UI,"Thread list + ask question",60,Visible on lesson page,P6-S1
+P6-S3,6 - Community,Q&A,Moderation stub,"Report/hide flags (admin later)",45,Report stores flag,P6-S2
+P7-S1,7 - Modes,Age UX,Elementary shell,"Larger UI; mission wording; block open AI chat",90,Toggle shows kid-friendly nav,P4-S3
+P7-S2,7 - Modes,Age UX,Middle school shell,"Studio + debug-AI placeholder copy",60,Mode switch works,P7-S1
+P7-S3,7 - Modes,Age UX,High school shell,"AI policy banner + capstone section stub",60,Policy text visible,P7-S2
+P7-S4,7 - Modes,Age UX,Professional shell,"Lab/scenario labels on lessons",60,Pro path filter works,P7-S3
+P8-S1,8 - Verticals,Expand,Islamic track stub,"courses/islamic-studies/basic/lesson-01 placeholder",60,Appears in catalog,P1-S4
+P8-S2,8 - Verticals,Expand,Age-group tracks,"elementary/middle/high/college course folders",60,Filters work,P7-S1
+P9-S1,9 - Deploy,Self-host,Caddy + local HTTPS,"Optional local reverse proxy config",60,HTTPS locally or via tunnel,P2-S6
+P9-S2,9 - Deploy,Self-host,Cloudflare Tunnel,"Point learn subdomain to laptop",90,Public URL loads portal,P9-S1
+P9-S3,9 - Deploy,Self-host,Squarespace DNS,"CNAME learn -> tunnel hostname",45,DNS propagates,P9-S2
+P9-S4,9 - Deploy,Self-host,Backup script,"pg_dump daily to external/B2",45,Backup file created,P0-S4
+P10-S1,10 - Future,Marketplace,Product model stub,"Listings table + admin-only create",90,Hidden page lists SKU,P5-S3
+P10-S2,10 - Future,Marketplace,Stripe Connect research,"Doc payout options; no code required day 1",60,docs/marketplace.md,P10-S1
